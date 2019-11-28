@@ -1,0 +1,4 @@
+# Makes git ignore the following folders
+.history
+.vscode
+out
