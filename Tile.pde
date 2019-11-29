@@ -5,7 +5,7 @@ class Tile
 
     Style style;
 
-    Boolean selected;
+    Boolean selected = false;
 
     Tile(Position _pos)
     {
@@ -16,13 +16,13 @@ class Tile
 
     void display()
     {
-        fill(style.fillColor);
+        style.applyStyle(selected);
         rect(pos.getX(), pos.getY(), w, w);
     }
 
     class Style
     {
-        private color fillColor = 255;
+        private color fillColor = 0;
         private color fillColorSelected = color(255,0,0);
 
         private color strokeColor = 255;
@@ -33,10 +33,14 @@ class Tile
 
         protected void applyStyle(Boolean selected)
         {
-            if (selected)
+            if (!selected)
             {
                 stroke(strokeColor);
                 fill(fillColor, opacity);
+            }
+            else {
+                stroke(strokeColorSelected);
+                fill(fillColorSelected, opacitySelected);
             }
         }
 
