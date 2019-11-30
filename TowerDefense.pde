@@ -1,7 +1,7 @@
 
 
-final static int SIZE_X = 1920/2;
-final static int SIZE_Y = 1080/2;
+final static int SIZE_X = 1920;
+final static int SIZE_Y = 1080;
 
 final static int GRID_SIZE_X = 15;
 final static int GRID_SIZE_Y = 9;
@@ -35,6 +35,7 @@ void draw()
     {
         map.display();
         sideMenu.display();
+        EnemyManager.displayEnemies();
     }
     else if (GameManager.gameState == 0)
     {
@@ -90,4 +91,5 @@ void startNewGame()
     actionManager = new ActionManager(frameCount, firstSelectedTile);
     sideMenu.initMenu();
     GameManager.setGameState(1);
+    EnemyManager.addEnemy(new Enemy(new Position(500, 500)));
 }
