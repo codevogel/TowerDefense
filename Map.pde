@@ -1,11 +1,11 @@
 class Map
 {
-    public Tile[][] grid;
+    public GameTile[][] grid;
     private Level level;
 
     Map()
     {
-        grid = new Tile[GRID_SIZE_X][GRID_SIZE_Y];
+        grid = new GameTile[GRID_SIZE_X][GRID_SIZE_Y];
     }
 
     protected void setLevel(Level _level)
@@ -16,9 +16,10 @@ class Map
     void display()
     {
         strokeWeight(1);
-        for (Tile[] tileList : grid)
+        
+        for (GameTile[] gameTileList : grid)
         {
-            for (Tile t : tileList)
+            for (GameTile t : gameTileList)
             {
                 t.display();
             }
@@ -33,22 +34,87 @@ class Map
         {
             for (int y = 0; y < GRID_SIZE_Y; y++)
             {
-                map.grid[x][y] = new Tile(new Position(posX, posY));
+                map.grid[x][y] = new GameTile(new Position(posX, posY));
                 posY += TILE_WIDTH;
             }
             posX += TILE_WIDTH;
             posY = TILE_WIDTH / 2;
         }
-        setTiles();
+        setGameTiles();
     }
     
-    protected void setTiles()
+    protected void setGameTiles()
     {
-        Position[] tileIndeces = level.tileIndeces;
+        Position[] waypointIndeces = level.waypointIndeces;
+        print(waypointIndeces.length);
         final color pathColor = 125;
-        for (Position pos : tileIndeces)
+
+        for (int index = 0; index < waypointIndeces.length; index++)
         {
-            map.grid[pos.x][pos.y].style.setColor("fillColor", pathColor);
+            Position current = waypointIndeces[index];
+
+            if (index + 1 < waypointIndeces.length)
+            {
+                Position next = waypointIndeces[index + 1];
+                setPath(current, next);
+            }
+            else {
+                setAPathGameTile(current.x, current.y);
+            }
         }
     }
+
+    protected void setPath(Position current, Position next)
+    {
+        final color pathColor = 125;
+        Boolean horizontal = (current.y == next.y) ? true : false;
+    
+        int constantIndex;
+        int iteratingIndex;
+
+        if (horizontal)
+        {
+            int y = current.y;
+            Boolean ascending = (current.x < next.x);
+            if (ascending)
+            {
+                for (int x = current.x; x < next.x; x++)
+                {
+                    setAPathGameTile(x, y);
+                }
+            }
+            else {
+                for (int x = current.x; x > next.x; x--)
+                {
+                    setAPathGameTile(x, y);
+                }
+            }
+        }
+        else {
+            int x = current.x;
+            Boolean ascending = (current.y < next.y);
+            if (ascending)
+            {
+                for (int y = current.y; y < next.y; y++)
+                {
+                    setAPathGameTile(x, y);
+                }
+            }
+            else {
+                for (int y = current.y; y > next.y; y--)
+                {
+                    setAPathGameTile(x, y);
+                }
+            }
+
+        }
+    }
+
+    private void setAPathGameTile(int x, int y)
+    {
+        grid[x][y].setPath(true);
+        grid[x][y].style.setColor("fillColor", level.style.pathColor);
+    }
+
+    
 }

@@ -1,11 +1,20 @@
 class Level
 {
-    private Position[] tileIndeces;
+    private Position[] waypointIndeces;
     private int levelNo;
 
-    Level(int _levelNo, Position[] _tileIndeces)
+    private Style style;
+
+    Level(int _levelNo, Position[] _waypointIndeces)
     {
         levelNo = _levelNo;
-        tileIndeces = _tileIndeces;
+        waypointIndeces = _waypointIndeces;
+        style = new Style();
+    }
+
+    class Style
+    {
+        color tileColor = 0;
+        color pathColor = 125;
     }
 }

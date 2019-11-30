@@ -42,7 +42,6 @@ class Levels
             {
                 firstLine = false;
                 resultLevelNo = parseFirstLine(s);
-                print(resultLevelNo);
             }
             // Handle the coordinates
             else

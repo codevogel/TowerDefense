@@ -1,6 +1,14 @@
 # Level number goes here, in the form of "1;"
 1;
 # The coordinates of the waypoint tiles go here
-# in the form of "x, y;"
-0, 5;
+# in the form of "x, y;" seperated by a new line.
+0, 2;
+2, 2;
 2, 5;
+4, 5;
+4, 7;
+7, 7;
+7, 2;
+10, 2;
+10, 5;
+14, 5;
