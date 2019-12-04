@@ -5,13 +5,57 @@ class Enemy
     private final int r = d / 2;
     private Style style;
 
+    private Boolean moving = true;
+
+    private int waypointsPassed;
+
     Enemy(Position _pos)
     {
         pos = _pos;
         style = new Style();
+        wayPointsPassed = 0;
+    }
+    
+    public void setWaypointsPassed(int _waypointsPassed)
+    {
+        waypointsPassed = _waypointsPassed;
     }
 
-    void display()
+    public int getWaypointsPassed()
+    {
+        return waypointsPassed;
+    }
+
+    public void setMoving(Boolean _moving)
+    {
+        moving = _moving;
+    }
+
+    public boolean isMoving()
+    {
+        return moving;
+    }
+
+    public void moveTowards(Position pos)
+    {
+        GameTile waypoint = Map.grid[pos.x][pos.y];
+        Boolean movingHorizontal = this.pos.y == waypoint.pos.y;
+
+        if (movingHorizontal)
+        {
+            
+        }
+    }
+
+    void move()
+    {
+        if (moving)
+        {
+
+        }
+    }
+
+    public void display()
     {
         fill(style.fillColor);
         circle(pos.x, pos.y, d);

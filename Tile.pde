@@ -13,7 +13,7 @@ class Tile
         style = new Style();
     }
 
-    protected void setSelected(Boolean _selected)
+    public void setSelected(Boolean _selected)
     {
         selected = _selected;
     }

@@ -6,12 +6,17 @@ static class PlayerController
     static protected Boolean downDown = false;
     static protected Boolean rightDown = false;
 
-    static protected Position selectionMap = new Position(0,0);
-    static protected int selectionMeny = 0;
+    static protected Position selectionMap = new Position(7,4);
+    static protected int selectionMenu = 0;
 
     static protected Boolean selectingMap = true;
 
     static private char key;
+
+    static public void setSelectionMenu(int y)
+    {
+        selectionMenu = y;
+    }
 
     static protected void setKey(char k)
     {
@@ -64,6 +69,86 @@ static class PlayerController
         }
     }
 
+    static private void swapSelection()
+    {
+        if (selectingMap)
+        {
+            selectingMap = false;
+        }
+        else 
+        {
+            selectingMap = true;
+        }
+        return;
+    }
+
+    static private void setSelection()
+    {
+        if (selectingMap)
+        {
+            if (upDown)
+            {
+                if (selectionMap.getY() == 0)
+                {
+                    selectionMap.setY(GRID_SIZE_Y - 1);
+                }
+                else 
+                {   
+                    selectionMap.setY(constrain(selectionMap.getY() - 1, 0, GRID_SIZE_Y - 1));
+                }
+            }
+            if (leftDown)
+            {
+                if (selectionMap.getX() == 0)
+                {
+                    selectionMap.setX(GRID_SIZE_X - 1);
+                }
+                else 
+                {
+                    selectionMap.setX(constrain(selectionMap.getX() - 1, 0, GRID_SIZE_X - 1));
+                }
+            }
+            if (downDown)
+            {
+                if (selectionMap.getY() == GRID_SIZE_Y - 1)
+                {
+                    selectionMap.setY(0);
+                }
+                else 
+                {
+                    selectionMap.setY(constrain(selectionMap.getY() + 1, 0, GRID_SIZE_Y - 1));
+                }
+            }
+            if (rightDown)
+            {
+                if (selectionMap.getX() == GRID_SIZE_X - 1)
+                {
+                    selectionMap.setX(0);
+                }
+                else 
+                {
+                    selectionMap.setX(constrain(selectionMap.getX() + 1, 0, GRID_SIZE_X - 1));
+                }          
+            }
+        }
+        else 
+        {
+            if (upDown)
+            {
+                selectionMenu = constrain(selectionMenu - 1, 0, GRID_SIZE_Y - 1);
+            }
+            if (leftDown || rightDown)
+            {
+                // swap back to game grid
+                swapSelection();
+            }
+            if (downDown)
+            {
+                selectionMenu = constrain(selectionMenu + 1, 0, GRID_SIZE_Y - 1);
+            }
+        }
+
+    }
 
     static private void upDown()
     {
@@ -103,24 +188,5 @@ static class PlayerController
         rightDown = false;
     }
 
-    static private void setMapSelection()
-    {
-        if (upDown)
-        {
-            selectionMap.setY(constrain(selectionMap.getY() - 1, 0, GRID_SIZE_Y - 1));
-        }
-        if (leftDown)
-        {
-            selectionMap.setX(constrain(selectionMap.getX() - 1, 0, GRID_SIZE_X - 1));
-        }
-        if (downDown)
-        {
-            print("down");
-            selectionMap.setY(constrain(selectionMap.getY() + 1, 0, GRID_SIZE_Y - 1));
-        }
-        if (rightDown)
-        {
-            selectionMap.setX(constrain(selectionMap.getX() + 1, 0, GRID_SIZE_X - 1));
-        }
-    }
+    
 }

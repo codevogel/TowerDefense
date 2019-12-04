@@ -1,6 +1,7 @@
 class Levels
 {
     final private int NUM_LEVELS = 1;
+    final private int currentLevel = 0;
 
     protected Level[] levels;
 

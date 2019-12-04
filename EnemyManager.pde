@@ -7,6 +7,19 @@ static class EnemyManager
         enemyList.add(e);
     }
 
+    protected static void moveEnemies()
+    {
+        Position[] waypointIndeces = Levels.levels[GameManager.getCurrentLevel].waypointIndeces;
+        for (Enemy e : enemyList)
+        {
+            if (e.isMoving())
+            {
+                e.moveTowards(e.waypointsPassed);
+            }
+            
+        }
+    }
+
     protected static void displayEnemies()
     {
         for (Enemy e : enemyList)
