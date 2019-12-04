@@ -1,12 +1,6 @@
 static class Map
 {
     static public GameTile[][] grid = new GameTile[GRID_SIZE_X][GRID_SIZE_Y];
-    static private Level level;
-
-    protected static void setLevel(Level _level)
-    {
-        level = _level;
-    }
 
     static void display()
     {
@@ -21,7 +15,7 @@ static class Map
         }
     }
     
-    static void initGrid(TowerDefense instance)
+    static void initGrid()
     {
         int posX = TILE_WIDTH / 2;
         int posY = posX;
@@ -29,7 +23,7 @@ static class Map
         {
             for (int y = 0; y < GRID_SIZE_Y; y++)
             {
-                grid[x][y] = instance.new GameTile(new Position(posX, posY));
+                grid[x][y] = towerDefenseInstance.new GameTile(new Position(posX, posY));
                 posY += TILE_WIDTH;
             }
             posX += TILE_WIDTH;
@@ -40,8 +34,7 @@ static class Map
     
     static protected void setGameTiles()
     {
-        Position[] waypointIndeces = level.waypointIndeces;
-        print(waypointIndeces.length);
+        Position[] waypointIndeces = LevelManager.currentLevel.waypointIndeces;
         final color pathColor = 125;
 
         for (int index = 0; index < waypointIndeces.length; index++)
@@ -108,7 +101,7 @@ static class Map
     static private void setAPathGameTile(int x, int y)
     {
         grid[x][y].setPath(true);
-        grid[x][y].style.setColor("fillColor", level.style.pathColor);
+        grid[x][y].style.setColor("fillColor", LevelManager.currentLevel.style.pathColor);
     }
 
     

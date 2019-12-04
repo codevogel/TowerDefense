@@ -9,11 +9,18 @@ class Enemy
 
     private int waypointsPassed;
 
+    private Waypoint nextWaypoint;
+
     Enemy(Position _pos)
     {
         pos = _pos;
         style = new Style();
-        wayPointsPassed = 0;
+        waypointsPassed = 0;
+    }
+
+    public void updateWaypoint()
+    {
+        
     }
     
     public void setWaypointsPassed(int _waypointsPassed)

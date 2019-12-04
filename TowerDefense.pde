@@ -12,19 +12,27 @@ private StartMenu startMenu = new StartMenu();
 
 private ActionManager actionManager;
 
-private Levels levels;
-private Map map;
-private SideMenu sideMenu;
+/**
+Processing parses this contents of this .pde file into a TowerDefense class
+All other .pde files are then parsed into nested classes of the TowerDefense class
+For instance, what we see as a 'LevelManager' class is in reality a
+'TowerDefense.LevelManager' class. Due to this behaviour, is it sometimes 
+required to get a reference to the TowerDefense instance to be able to
+instantiate TowerDefense's nested classes or make use of Processing's methods.
+*/
+public static TowerDefense towerDefenseInstance;
 
 void settings()
 {
+    // Get a reference to this TowerDefense object
+    towerDefenseInstance = this;
     size(SIZE_X, SIZE_Y);
 }
 
 void setup()
 {
     rectMode(CENTER);
-    levels = new Levels();
+    LevelManager.initLevels();
 }
 
 void draw()
@@ -52,7 +60,7 @@ void mousePressed()
     }
     else if (GameManager.gameState == 1)
     {
-        for (GameTile[] tList : map.grid)
+        for (GameTile[] tList : Map.grid)
         {
             for (GameTile t : tList)
             {
@@ -84,9 +92,9 @@ void keyReleased()
 
 void startNewGame()
 {
-    Map.setLevel(levels.levels[0]);
-    Map.initGrid(this);
-    SideMenu.initMenu(this);
+    LevelManager.setCurrentLevel(1);
+    Map.initGrid();
+    SideMenu.initMenu();
     ActionManager.initSelectedTile(0);
     ActionManager.initSelectedTile(1);
     GameManager.setGameState(1);
