@@ -1,5 +1,3 @@
-
-
 final static int SIZE_X = 1920;
 final static int SIZE_Y = 1080;
 
@@ -33,8 +31,8 @@ void draw()
 {
     if (GameManager.gameState == 1)
     {
-        map.display();
-        sideMenu.display();
+        Map.display();
+        SideMenu.display();
         EnemyManager.displayEnemies();
     }
     else if (GameManager.gameState == 0)
@@ -67,11 +65,15 @@ void mousePressed()
 void keyPressed()
 {
     PlayerController.setKeyState(key, true);
-    if (actionManager.inputTimer.inputAllowed(frameCount))
+    if (InputTimer.inputAllowed(frameCount))
     {
-        actionManager.undoTileSelection();
-        PlayerController.setMapSelection();
-        actionManager.setTileSelection();
+        PlayerController.setSelection();
+        ActionManager.getSelectedTile();
+    }
+
+    if (key == ' ')
+    {
+        PlayerController.swapSelection();
     }
 }
 
@@ -82,14 +84,11 @@ void keyReleased()
 
 void startNewGame()
 {
-    map = new Map();
-    map.setLevel(levels.levels[0]);
-    map.initGrid();
-    sideMenu = new SideMenu();
-    GameTile firstSelectedTile = map.grid[0][0];
-    firstSelectedTile.setSelected(true);
-    actionManager = new ActionManager(frameCount, firstSelectedTile);
-    sideMenu.initMenu();
+    Map.setLevel(levels.levels[0]);
+    Map.initGrid(this);
+    SideMenu.initMenu(this);
+    ActionManager.initSelectedTile(0);
+    ActionManager.initSelectedTile(1);
     GameManager.setGameState(1);
     EnemyManager.addEnemy(new Enemy(new Position(500, 500)));
 }

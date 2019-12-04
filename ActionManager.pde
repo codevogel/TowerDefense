@@ -1,45 +1,36 @@
-class ActionManager
+static class ActionManager
 {
-    InputTimer inputTimer;
-    private GameTile selectedTile;
+    static public GameTile selectedGameTile;
+    static public MenuTile selectedMenuTile;
 
-    ActionManager(int frameNo, GameTile _selectedTile)
+    static public void initSelectedTile(int type)
     {
-        inputTimer = new InputTimer(frameNo);
-        selectedTile = _selectedTile;
-    }
-
-
-    private void setTileSelection()
-    {
-        selectedTile = map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
-        selectedTile.setSelected(true);
-    }
-
-    private void undoTileSelection()
-    {
-        selectedTile.setSelected(false);
-    }
-    
-    class InputTimer
-    {
-        private int previousKeyPress;
-        private final int FRAMES_BETWEEN_INPUTS = 5;
-
-        InputTimer(int frameNo)
+        if (type == 0)
         {
-            previousKeyPress = frameNo;
+            selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
+            selectedGameTile.setSelected(true);
         }
-
-        Boolean inputAllowed(int frameNo)
+        else 
         {
-            if (frameNo - previousKeyPress > FRAMES_BETWEEN_INPUTS)
-            {
-                previousKeyPress = frameNo;
-                return true;
-            }
-            return false;
+            selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
+            selectedMenuTile.setSelected(true);
         }
     }
 
+    static public void getSelectedTile()
+    {
+        if (PlayerController.selectingMap)
+        {
+            selectedGameTile.setSelected(false);
+            selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
+            selectedGameTile.setSelected(true);
+        }
+        else 
+        {
+            selectedMenuTile.setSelected(false);
+            selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
+            selectedMenuTile.setSelected(true);
+        }
+
+    }
 }
