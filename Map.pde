@@ -14,6 +14,11 @@ static class Map
             }
         }
     }
+
+    public static GameTile getTileAt(int x, int y)
+    {
+        return grid[x][y];
+    }
     
     static void initGrid()
     {
@@ -23,7 +28,7 @@ static class Map
         {
             for (int y = 0; y < GRID_SIZE_Y; y++)
             {
-                grid[x][y] = towerDefenseInstance.new GameTile(new Position(posX, posY));
+                grid[x][y] = tDInstance.new GameTile(new Position(posX, posY));
                 posY += TILE_WIDTH;
             }
             posX += TILE_WIDTH;

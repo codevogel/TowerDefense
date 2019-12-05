@@ -6,6 +6,8 @@ final static int GRID_SIZE_Y = 9;
 
 final static int TILE_WIDTH = SIZE_X / 16;
 
+final static private int FRAME_RATE = 30;
+
 final static int DEFAULT_STROKE_SIZE = 1;
 
 private StartMenu startMenu = new StartMenu();
@@ -20,30 +22,43 @@ For instance, what we see as a 'LevelManager' class is in reality a
 required to get a reference to the TowerDefense instance to be able to
 instantiate TowerDefense's nested classes or make use of Processing's methods.
 */
-public static TowerDefense towerDefenseInstance;
+public static TowerDefense tDInstance;
 
 void settings()
 {
     // Get a reference to this TowerDefense object
-    towerDefenseInstance = this;
+    tDInstance = this;
     size(SIZE_X, SIZE_Y);
 }
 
 void setup()
 {
+    frameRate(FRAME_RATE);
     rectMode(CENTER);
+    textMode(CENTER);
     LevelManager.initLevels();
 }
 
 void draw()
 {
-    if (GameManager.gameState == 1)
+    if (GameManager.playing())
     {
+        if (WaveManager.started())
+        {
+            WaveManager.spawnEnemies(frameCount);
+        }
         Map.display();
         SideMenu.display();
+        EnemyManager.moveEnemies();
         EnemyManager.displayEnemies();
     }
-    else if (GameManager.gameState == 0)
+    else if (GameManager.startOfWave())
+    {
+        text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
+        Map.display();
+        SideMenu.display();
+    }
+    else if (GameManager.inStartMenu())
     {
         startMenu.display();
     }
@@ -51,33 +66,52 @@ void draw()
 
 void mousePressed()
 {
-    if (GameManager.gameState == 0)
+    if (GameManager.inStartMenu())
     {
         if (startMenu.checkForStart())
         {
             startNewGame();
         }
     }
-    else if (GameManager.gameState == 1)
+    else if (GameManager.playing())
     {
-        for (GameTile[] tList : Map.grid)
-        {
-            for (GameTile t : tList)
-            {
-                print(String.format("Tile on x: %d, y: %d, is a path: %b\n", t.pos.x, t.pos.y, t.path));
-            }
-        }
+        print(EnemyManager.enemyList.size());
+        // for (GameTile[] tList : Map.grid)
+        // {
+        //     for (GameTile t : tList)
+        //     {
+        //         print(String.format("Tile on x: %d, y: %d, is a path: %b\n", t.pos.x, t.pos.y, t.path));
+        //     }
+        // }
     }
 }
 
 void keyPressed()
 {
-    PlayerController.setKeyState(key, true);
-    if (InputTimer.inputAllowed(frameCount))
+    if (GameManager.playing())
     {
-        PlayerController.setSelection();
-        ActionManager.getSelectedTile();
+        if (key == 'k')
+        {
+            print(EnemyManager.enemyList.get(2).pos.getX());
+        }
+        PlayerController.setKeyState(key, true);
+        if (InputTimer.inputAllowed(frameCount))
+        {
+            PlayerController.setSelection();
+            ActionManager.getSelectedTile();
+        }
     }
+
+    // TEMPORARY TEST INPUTS
+    if (GameManager.startOfWave())
+    {
+        if (key == 'j')
+        {
+            GameManager.setGameState(1);
+            WaveManager.startWave(frameCount);
+        }
+    }
+
 
     if (key == ' ')
     {
@@ -92,11 +126,15 @@ void keyReleased()
 
 void startNewGame()
 {
+    // Set the current level
     LevelManager.setCurrentLevel(1);
+    // Initialize the map
     Map.initGrid();
+    WaveManager.setFirstPositions();
+    // Initialize the sidemenu
     SideMenu.initMenu();
-    ActionManager.initSelectedTile(0);
-    ActionManager.initSelectedTile(1);
-    GameManager.setGameState(1);
-    EnemyManager.addEnemy(new Enemy(new Position(500, 500)));
+    // Select the initially selected tiles
+    ActionManager.initSelectedTiles();
+    // Change the gamestate to paused
+    GameManager.setGameState(2);
 }

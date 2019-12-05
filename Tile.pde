@@ -13,6 +13,11 @@ class Tile
         style = new Style();
     }
 
+    public Position getPos()
+    {
+        return pos;
+    }
+
     public void setSelected(Boolean _selected)
     {
         selected = _selected;

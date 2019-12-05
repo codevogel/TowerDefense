@@ -12,6 +12,11 @@ class Level
         style = new Style();
     }
 
+    public Position[] getWaypointIndeces()
+    {
+        return waypointIndeces;
+    }
+
     class Style
     {
         color tileColor = 0;

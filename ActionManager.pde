@@ -3,6 +3,12 @@ static class ActionManager
     static public GameTile selectedGameTile;
     static public MenuTile selectedMenuTile;
 
+    static public void initSelectedTiles()
+    {
+        initSelectedTile(0);
+        initSelectedTile(1);
+    }
+
     static public void initSelectedTile(int type)
     {
         if (type == 0)

@@ -9,7 +9,7 @@ static class SideMenu
         int x = SIZE_X - y;
         for (int i = 0; i < buttons.length; i++)
         {
-            buttons[i] = towerDefenseInstance.new MenuTile(new Position(x, y));
+            buttons[i] = tDInstance.new MenuTile(new Position(x, y));
             buttons[i].style.setColor("fillColor", 255);
             y += TILE_WIDTH;
         }

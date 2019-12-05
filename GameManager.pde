@@ -8,6 +8,21 @@ static class GameManager
         gameState = state;
         return;
     }
+
+    public static Boolean inStartMenu()
+    {
+        return gameState == 0;
+    }
+
+    public static Boolean playing()
+    {
+        return gameState == 1;
+    }
+
+    public static Boolean startOfWave()
+    {
+        return gameState == 2;
+    }
     
     public static void setCurrentLevel(int levelNo)
     {

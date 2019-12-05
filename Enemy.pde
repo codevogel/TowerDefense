@@ -6,26 +6,44 @@ class Enemy
     private Style style;
 
     private Boolean moving = true;
+    private Boolean reachedLastPos = false;
 
     private int waypointsPassed;
 
     private Waypoint nextWaypoint;
 
-    Enemy(Position _pos)
+    private int v = 10;
+
+    Enemy(Position _pos, Position firstWaypointPosition)
     {
         pos = _pos;
         style = new Style();
         waypointsPassed = 0;
+        nextWaypoint = new Waypoint(pos, firstWaypointPosition);
     }
 
-    public void updateWaypoint()
+    public void passWaypoint()
     {
-        
-    }
-    
-    public void setWaypointsPassed(int _waypointsPassed)
-    {
-        waypointsPassed = _waypointsPassed;
+        if (reachedLastPos)
+        {
+            // enemy should die here
+            moving = false;
+            return;
+        }
+        Position[] waypointIndeces = LevelManager.getCurrentLevel().getWaypointIndeces();
+        waypointsPassed += 1;
+
+        if (waypointsPassed < waypointIndeces.length)
+        {
+            Position index = waypointIndeces[waypointsPassed];
+            GameTile tile = Map.getTileAt(index.getX(), index.getY());
+            nextWaypoint = new Waypoint(pos, tile.getPos());
+        }
+        else {
+            Position finalPosition = new Position(nextWaypoint.pos.getX() + TILE_WIDTH, nextWaypoint.pos.getY());
+            nextWaypoint = new Waypoint(pos, finalPosition);
+            reachedLastPos = true;
+        }
     }
 
     public int getWaypointsPassed()
@@ -43,22 +61,66 @@ class Enemy
         return moving;
     }
 
-    public void moveTowards(Position pos)
-    {
-        GameTile waypoint = Map.grid[pos.x][pos.y];
-        Boolean movingHorizontal = this.pos.y == waypoint.pos.y;
-
-        if (movingHorizontal)
-        {
-            
-        }
-    }
-
     void move()
     {
-        if (moving)
+        // if enemy has to move horizontally
+        if (nextWaypoint.isHorizontal())
         {
-
+            int nextX = nextWaypoint.pos.getX();
+            // and forwards
+            if (nextWaypoint.isForward())
+            {
+                int newX = pos.getX() + v;
+                pos.setX(newX);
+                if (newX >= nextX)
+                {
+                    newX = nextX;
+                    pos.setX(newX);
+                    passWaypoint();
+                }
+                return;
+            }
+            // or backwards
+            int newX = pos.getX() - v;
+            pos.setX(newX);
+            if (newX <= nextX)
+            {
+                newX = nextX;
+                pos.setX(newX);
+                passWaypoint();
+            }
+            return;
+        }
+        // if enemy has to move vertically
+        else 
+        {
+            int nextY = nextWaypoint.pos.getY();
+            // print(String.format("currentPos: %d, nextY: %d\n", pos.getY(), nextY));
+            // print(nextWaypoint.isForward() + "\n");
+            
+            // and forwards
+            if (nextWaypoint.isForward())
+            {
+                int newY = pos.getY() + v;
+                pos.setY(newY);
+                if (newY >= nextY)
+                {
+                    newY = nextY;
+                    pos.setY(newY);
+                    passWaypoint();
+                }
+                return;
+            }
+            // or backwards
+            int newY = pos.getY() - v;
+            pos.setY(newY);
+            if (newY <= nextY)
+            {
+                newY = nextY;
+                pos.setY(newY);
+                passWaypoint();
+            }
+            return;
         }
     }
 

@@ -1,6 +1,6 @@
 static class LevelManager
 {
-    final static private int NUM_LEVELS = 1;
+    final static private int NUM_LEVELS = 2;
     static private int currentLevelNo = 0;
     static private Level currentLevel;
 
@@ -41,6 +41,10 @@ static class LevelManager
         {
             return readLevelFile("levelOne.level");
         }
+        else if (levelNo == 2)
+        {
+            return readLevelFile("levelTwo.level");
+        }
         return null;
     }
 
@@ -48,7 +52,7 @@ static class LevelManager
     {
         int resultLevelNo = 0;
         Boolean firstLine = true;
-        String[] lines = towerDefenseInstance.loadStrings(filename);
+        String[] lines = tDInstance.loadStrings(filename);
         ArrayList<Position> waypointsArrayList = new ArrayList<Position>();
         for (String s : lines)
         {
@@ -77,7 +81,7 @@ static class LevelManager
             waypointsArray[index] = p;
             index++;
         }
-        return towerDefenseInstance.new Level(resultLevelNo, waypointsArray);
+        return tDInstance.new Level(resultLevelNo, waypointsArray);
     }
 
     private static int parseFirstLine(String line)

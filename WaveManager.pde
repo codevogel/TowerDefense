@@ -1,67 +1,66 @@
 static class WaveManager
 {
-    private static boolean active = false;
 
-    private static int wave = 1;
+    private static int previousFrame;
 
-    private static int numUnitsSpawned;
-    private static int numUnitsToSpawn;
+    private static Boolean started = false;
 
-    private static int frameToSpawnNextUnit;
+    private static final int FRAMES_BETWEEN_UNITS = FRAME_RATE * 2;
 
-    private final static int UNITS_PER_WAVE = 5;
+    private static Position firstEnemyPosition;
+    private static Position firstWaypointPosition;
 
-    private static final int FRAMES_BETWEEN_UNITS = 50;
+    private static final int ENEMIES_PER_WAVE = 5;
 
-    static protected void startWave()
+    private static int waveCount = 1;
+    private static int numEnemiesAdded = 0;
+    private static int numEnemiesToAdd = ENEMIES_PER_WAVE;
+    
+
+    public static void startWave(int frameNo)
     {
-        active = true;
+        previousFrame = frameNo;
+        started = true;
     }
 
-    static protected void stopWave()
+    public static void setFirstPositions()
     {
-        active = false;
+        Position firstIndex = LevelManager.getCurrentLevel().getWaypointIndeces()[0];
+        firstWaypointPosition = Map.getTileAt(firstIndex.getX(), firstIndex.getY()).getPos();
+        firstEnemyPosition = new Position(firstWaypointPosition.getX() - TILE_WIDTH, firstWaypointPosition.getY());
     }
 
-    static protected void incrementWave()
+    public static Boolean started()
     {
-        wave++;
+        return started;
     }
 
-    static protected void initWave(int frameNo)
+    public static void nextWave()
     {
         EnemyManager.clearEnemyList();
-        setNumUnitsToSpawn(getUnitsToSpawn());
-        setNumUnitsSpawned(0);
-        setFrameToSpawnNextUnit(frameNo + FRAMES_BETWEEN_UNITS);
-        startWave();
+        waveCount++;
+        numEnemiesAdded = 0;
+        numEnemiesToAdd = waveCount * ENEMIES_PER_WAVE;
     }
 
-    static protected void spawnUnit(int frameCount)
+    public static void spawnEnemies(int currentFrame)
     {
-        if (frameCount >= frameToSpawnNextUnit)
+        
+        if (currentFrame >= previousFrame + FRAMES_BETWEEN_UNITS)
         {
-            // EnemyManager.addEnemy(new Enemy(new Position(500, 500)));
+            // print(String.format("Current frame: %d, previousFrame - FRAMES_BETWEEN_UNITS: %d\n", currentFrame, previousFrame - FRAMES_BETWEEN_UNITS));
+            previousFrame = currentFrame;
+            // print("ADDING ENEMY\n");
+
+            // Ensure we pass the standard position as it's own object
+            Position uniquePosition = new Position(firstEnemyPosition.getX(), firstEnemyPosition.getY());
+            EnemyManager.addEnemy(tDInstance.new Enemy(uniquePosition, firstWaypointPosition));
+            print("positions: ", firstEnemyPosition.getX(), "   ", firstEnemyPosition.getY(), "\n");
+            numEnemiesAdded += 1;
         }
-    }
-
-    static protected int getUnitsToSpawn()
-    {
-        return wave * UNITS_PER_WAVE;
-    }
-
-    static protected void setNumUnitsToSpawn(int _numUnitsToSpawn)
-    {
-        numUnitsToSpawn = _numUnitsToSpawn;
-    }
-
-    static protected void setNumUnitsSpawned(int _numUnitsSpawned)
-    {
-        numUnitsSpawned = _numUnitsSpawned;
-    }
-
-    static protected void setFrameToSpawnNextUnit(int _frameToSpawnNextUnit)
-    {
-        frameToSpawnNextUnit = _frameToSpawnNextUnit;
+        if (numEnemiesAdded == numEnemiesToAdd)
+        {
+            started = false;
+        } 
     }
 }
