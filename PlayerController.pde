@@ -88,46 +88,58 @@ static class PlayerController
         {
             if (upDown)
             {
-                if (selectionMap.getY() == 0)
+                // if not on top row
+                if (selectionMap.getY() != 0)
                 {
-                    selectionMap.setY(GRID_SIZE_Y - 1);
+                    // move selection up
+                    selectionMap.setY(selectionMap.getY() - 1);
                 }
                 else 
                 {   
-                    selectionMap.setY(constrain(selectionMap.getY() - 1, 0, GRID_SIZE_Y - 1));
+                    // overflow to bottom row of board
+                    selectionMap.setY(GRID_SIZE_Y - 1);
                 }
             }
             if (leftDown)
             {
-                if (selectionMap.getX() == 0)
+                // if not on leftmost row
+                if (selectionMap.getX() != 0)
                 {
-                    selectionMap.setX(GRID_SIZE_X - 1);
+                    // move selection left
+                    selectionMap.setX(selectionMap.getX() - 1);
                 }
                 else 
                 {
-                    selectionMap.setX(constrain(selectionMap.getX() - 1, 0, GRID_SIZE_X - 1));
+                    // overflow to rightmost row of board
+                    selectionMap.setX(GRID_SIZE_X - 1);
                 }
             }
             if (downDown)
             {
-                if (selectionMap.getY() == GRID_SIZE_Y - 1)
+                // if not on bottom row
+                if (selectionMap.getY() != GRID_SIZE_Y - 1)
                 {
-                    selectionMap.setY(0);
+                    // move selection down
+                    selectionMap.setY(selectionMap.getY() + 1);
                 }
                 else 
                 {
-                    selectionMap.setY(constrain(selectionMap.getY() + 1, 0, GRID_SIZE_Y - 1));
+                    // overflow to top row of board
+                    selectionMap.setY(0);
                 }
             }
             if (rightDown)
             {
-                if (selectionMap.getX() == GRID_SIZE_X - 1)
+                // if not on the rightmost row
+                if (selectionMap.getX() != GRID_SIZE_X - 1)
                 {
-                    selectionMap.setX(0);
+                    // move selection right
+                    selectionMap.setX(selectionMap.getX() + 1);
                 }
                 else 
                 {
-                    selectionMap.setX(constrain(selectionMap.getX() + 1, 0, GRID_SIZE_X - 1));
+                    // overflow to left row of board
+                    selectionMap.setX(0);
                 }          
             }
         }
@@ -135,7 +147,17 @@ static class PlayerController
         {
             if (upDown)
             {
-                selectionMenu = constrain(selectionMenu - 1, 0, GRID_SIZE_Y - 1);
+                // if selection not on top button
+                if (selectionMenu != 0)
+                {
+                    // move selection up
+                    selectionMenu -=1;
+                }
+                else
+                {
+                    // overflow to the bottom button
+                    selectionMenu = GRID_SIZE_Y -1;
+                }
             }
             if (leftDown || rightDown)
             {
@@ -144,7 +166,17 @@ static class PlayerController
             }
             if (downDown)
             {
-                selectionMenu = constrain(selectionMenu + 1, 0, GRID_SIZE_Y - 1);
+                // if selection not on bottom button
+                if (selectionMenu != GRID_SIZE_Y - 1)
+                {
+                    // move selection down
+                    selectionMenu += 1;
+                }
+                else
+                {
+                    // overflow to the top button
+                    selectionMenu = 0;
+                }
             }
         }
 
