@@ -1,11 +1,21 @@
 class GameTile extends Tile
 {
-    private Boolean path = false;
+    private boolean path = false;
     private Tower tower;
 
     GameTile(Position pos)
     {
         super(pos);
+    }
+
+    public boolean isPath()
+    {
+        return path;
+    }
+
+    public boolean hasTower()
+    {
+        return tower != null;
     }
 
     protected void setPath(boolean _path)

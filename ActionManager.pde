@@ -11,15 +11,24 @@ static class ActionManager
 
     static public void placeTowerAt(int x, int y, int type)
     {
+        GameTile tile = Map.grid[x][y];
+        if (tile.isPath() || tile.hasTower())
+        {
+            return;
+        }
         if (type == 1)
         {
-            GameTile tile = Map.grid[x][y];
+            
             tile.setTower(tDInstance.new LaserTower(tile));
         }
     }
 
     static public void placeTowerAtSelected(int type)
     {
+        if (selectedGameTile.isPath() || selectedGameTile.hasTower())
+        {
+            return;
+        }
         if (type == 1)
         {
             selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
