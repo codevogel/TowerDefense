@@ -63,6 +63,8 @@ void draw()
         EnemyManager.handleEnemies();
         TowerManager.displayTowers();
         TowerManager.fireTowers();
+
+        ActionManager.handlePlayingInput();
     }
     else if (GameManager.startOfWave())
     {
@@ -70,6 +72,8 @@ void draw()
         TowerManager.displayTowers();
         SideMenu.display();
         text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
+
+        ActionManager.handleStartOfWaveInput(frameCount);
     }
     else if (GameManager.inStartMenu())
     {
@@ -95,11 +99,6 @@ void mousePressed()
     }
 }
 
-void handleInput()
-{
-    PlayerController.setKeyState(key, true);
-    selectCurrentTiles();
-}
 
 void selectCurrentTiles()
 {
@@ -112,29 +111,17 @@ void selectCurrentTiles()
 
 void keyPressed()
 {
-    if (GameManager.playing())
-    {
-        handleInput();
-        if (key == 'k')
-        {
-            ActionManager.placeTowerAtSelected(1);
-        }
-    }
-
-    // TEMPORARY TEST INPUTS
-    if (GameManager.startOfWave())
-    {
-        handleInput();
-        if (key == 'j')
-        {
-            GameManager.setGameState(1);
-            WaveManager.startWave(frameCount);
-        }
-    }
+    setInput();
     if (key == ' ')
     {
         PlayerController.swapSelection();
     }
+}
+
+void setInput()
+{
+    PlayerController.setKeyState(key, true);
+    selectCurrentTiles();
 }
 
 void keyReleased()

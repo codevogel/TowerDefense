@@ -6,6 +6,9 @@ static class PlayerController
     static protected Boolean downDown = false;
     static protected Boolean rightDown = false;
 
+    static private boolean placeTowerDown = false;
+    static private boolean startWaveDown = false;
+
     static protected Position selectionMap = new Position(7,4);
     static protected int selectionMenu = 0;
 
@@ -23,8 +26,16 @@ static class PlayerController
         key = k;
     }
 
+    // For buttons that shouldn't be able to be held down
+    static protected void resetSinglePresses()
+    {
+        placeTowerDown = false;
+        startWaveDown = false;
+    }
+
     static protected void setKeyState(char k, boolean down)
     {
+        resetSinglePresses();
         setKey(k);
         switch(key)
         {
@@ -64,9 +75,50 @@ static class PlayerController
                     rightUp();
                 }
                 return;
+            case 'j':
+                if (down)
+                {
+                    startWaveDown();
+                }
+                return;
+            case 'k':
+                if (down)
+                {
+                    placeTowerDown();
+                }
             default:
                 return;
         }
+    }
+
+    static public boolean getStartWaveDown()
+    {
+        return startWaveDown;
+    }
+    
+    static public void setStartWaveDown(boolean down)
+    {
+        startWaveDown = down;
+    }
+
+    static private void startWaveDown()
+    {
+        startWaveDown = true;
+    }
+
+    static public boolean getPlaceTowerDown()
+    {
+        return placeTowerDown;
+    }
+    
+    static public void setPlaceTowerDown(boolean down)
+    {
+        placeTowerDown = down;
+    }
+
+    static private void placeTowerDown()
+    {
+        placeTowerDown = true;
     }
 
     static private void swapSelection()

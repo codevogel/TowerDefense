@@ -9,6 +9,24 @@ static class ActionManager
         initSelectedTile(1);
     }
 
+    static public void handleStartOfWaveInput(int frameCount)
+    {
+        if (PlayerController.getStartWaveDown())
+        {
+            startWave(frameCount);
+            PlayerController.setStartWaveDown(false);
+        }
+    }
+
+    static public void handlePlayingInput()
+    {
+        if (PlayerController.getPlaceTowerDown())
+        {
+            placeTowerAtSelected(1);
+            PlayerController.setPlaceTowerDown(false);
+        }
+    }
+
     static public void placeTowerAt(int x, int y, int type)
     {
         GameTile tile = Map.grid[x][y];
@@ -21,6 +39,12 @@ static class ActionManager
             
             tile.setTower(tDInstance.new LaserTower(tile));
         }
+    }
+
+    static public void startWave(int frameCount)
+    {
+        GameManager.setGameState(1);
+        WaveManager.startWave(frameCount);
     }
 
     static public void placeTowerAtSelected(int type)
