@@ -3,9 +3,7 @@ static class Map
     static public GameTile[][] grid = new GameTile[GRID_SIZE_X][GRID_SIZE_Y];
 
     static void display()
-    {
-        // strokeWeight(1);
-        
+    {        
         for (GameTile[] gameTileList : grid)
         {
             for (GameTile t : gameTileList)

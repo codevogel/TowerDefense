@@ -7,19 +7,37 @@ static class EnemyManager
         enemyList.add(e);
     }
 
-    protected static void moveEnemies()
+    public static void removeEnemyAt(int index)
     {
+        enemyList.remove(index);
+    }
+
+    protected static void handleEnemies()
+    {
+        removeEnemies();
         for (Enemy e : enemyList)
         {
             e.move();
+            e.display();
         }
     }
 
-    protected static void displayEnemies()
+    private static void removeEnemies()
     {
-        for (Enemy e : enemyList)
+        IntList indexesToRemove = new IntList();
+        int index = 0;
+        for (Enemy e: enemyList)
         {
-            e.display();
+            if (!e.isAlive())
+            {
+                indexesToRemove.append(index);
+            }
+            index++;
+        }
+
+        for (int i : indexesToRemove)
+        {
+            enemyList.remove(i);
         }
     }
 

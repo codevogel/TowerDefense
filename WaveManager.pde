@@ -10,17 +10,27 @@ static class WaveManager
     private static Position firstEnemyPosition;
     private static Position firstWaypointPosition;
 
-    private static final int ENEMIES_PER_WAVE = 5;
+    private static final int ENEMIES_PER_WAVE = 3;
 
     private static int waveCount = 1;
     private static int numEnemiesAdded = 0;
+    private static int numEnemiesDead = 0;
     private static int numEnemiesToAdd = ENEMIES_PER_WAVE;
     
+    public static int getWaveCount()
+    {
+        return waveCount;
+    }
 
     public static void startWave(int frameNo)
     {
         previousFrame = frameNo;
         started = true;
+    }
+
+    public static void enemyKilled()
+    {
+        numEnemiesDead += 1;
     }
 
     public static void setFirstPositions()
@@ -35,11 +45,18 @@ static class WaveManager
         return started;
     }
 
+    public static Boolean waveOver()
+    {
+        return numEnemiesDead == numEnemiesToAdd;
+    }
+
     public static void nextWave()
     {
         EnemyManager.clearEnemyList();
-        waveCount++;
+        GameManager.setGameState(2);
         numEnemiesAdded = 0;
+        numEnemiesDead = 0;
+        waveCount++;
         numEnemiesToAdd = waveCount * ENEMIES_PER_WAVE;
     }
 
@@ -55,7 +72,7 @@ static class WaveManager
             // Ensure we pass the standard position as it's own object
             Position uniquePosition = new Position(firstEnemyPosition.getX(), firstEnemyPosition.getY());
             EnemyManager.addEnemy(tDInstance.new Enemy(uniquePosition, firstWaypointPosition));
-            print("positions: ", firstEnemyPosition.getX(), "   ", firstEnemyPosition.getY(), "\n");
+            // print("positions: ", firstEnemyPosition.getX(), "   ", firstEnemyPosition.getY(), "\n");
             numEnemiesAdded += 1;
         }
         if (numEnemiesAdded == numEnemiesToAdd)

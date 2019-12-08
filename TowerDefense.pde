@@ -36,6 +36,7 @@ void setup()
     frameRate(FRAME_RATE);
     rectMode(CENTER);
     textMode(CENTER);
+    textSize(40);
     LevelManager.initLevels();
 }
 
@@ -46,22 +47,37 @@ void draw()
         if (WaveManager.started())
         {
             WaveManager.spawnEnemies(frameCount);
+
         }
+        if (WaveManager.waveOver())
+        {
+            WaveManager.nextWave();
+        }
+        // Temporary: set grid stroke
+        stroke(125, 125);
+        strokeWeight(1);
         Map.display();
+
+
         SideMenu.display();
-        EnemyManager.moveEnemies();
-        EnemyManager.displayEnemies();
+        EnemyManager.handleEnemies();
+        TowerManager.displayTowers();
+        TowerManager.fireTowers();
     }
     else if (GameManager.startOfWave())
     {
-        text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
         Map.display();
+        TowerManager.displayTowers();
         SideMenu.display();
+        text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
     }
     else if (GameManager.inStartMenu())
     {
         startMenu.display();
     }
+    fill(255);
+    text(String.format("Gamestate: %d", GameManager.getGameState()), 100 , 100);
+    text(String.format("Wave: %d", WaveManager.getWaveCount()), 100 , 200);
 }
 
 void mousePressed()
@@ -75,14 +91,22 @@ void mousePressed()
     }
     else if (GameManager.playing())
     {
-        print(EnemyManager.enemyList.size());
-        // for (GameTile[] tList : Map.grid)
-        // {
-        //     for (GameTile t : tList)
-        //     {
-        //         print(String.format("Tile on x: %d, y: %d, is a path: %b\n", t.pos.x, t.pos.y, t.path));
-        //     }
-        // }
+        
+    }
+}
+
+void handleInput()
+{
+    PlayerController.setKeyState(key, true);
+    selectCurrentTiles();
+}
+
+void selectCurrentTiles()
+{
+    if (InputTimer.inputAllowed(frameCount))
+    {
+        PlayerController.setSelection();
+        ActionManager.getSelectedTile();
     }
 }
 
@@ -90,29 +114,23 @@ void keyPressed()
 {
     if (GameManager.playing())
     {
+        handleInput();
         if (key == 'k')
         {
-            print(EnemyManager.enemyList.get(2).pos.getX());
-        }
-        PlayerController.setKeyState(key, true);
-        if (InputTimer.inputAllowed(frameCount))
-        {
-            PlayerController.setSelection();
-            ActionManager.getSelectedTile();
+            ActionManager.placeTowerAtSelected(1);
         }
     }
 
     // TEMPORARY TEST INPUTS
     if (GameManager.startOfWave())
     {
+        handleInput();
         if (key == 'j')
         {
             GameManager.setGameState(1);
             WaveManager.startWave(frameCount);
         }
     }
-
-
     if (key == ' ')
     {
         PlayerController.swapSelection();

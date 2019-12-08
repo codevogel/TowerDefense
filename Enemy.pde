@@ -5,6 +5,9 @@ class Enemy
     private final int r = d / 2;
     private Style style;
 
+    private int hp;
+    private Boolean alive = true;
+
     private Boolean moving = true;
     private Boolean reachedLastPos = false;
 
@@ -19,7 +22,25 @@ class Enemy
         pos = _pos;
         style = new Style();
         waypointsPassed = 0;
+        hp = 100;
         nextWaypoint = new Waypoint(pos, firstWaypointPosition);
+    }
+
+    public Boolean isAlive()
+    {
+        return alive;
+    }
+
+    public Boolean takeDamage(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            alive = false;
+            WaveManager.enemyKilled();
+            return true;
+        }
+        return false;
     }
 
     public void passWaypoint()

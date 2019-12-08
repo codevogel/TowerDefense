@@ -9,6 +9,24 @@ static class ActionManager
         initSelectedTile(1);
     }
 
+    static public void placeTowerAt(int x, int y, int type)
+    {
+        if (type == 1)
+        {
+            GameTile tile = Map.grid[x][y];
+            tile.setTower(tDInstance.new LaserTower(tile));
+        }
+    }
+
+    static public void placeTowerAtSelected(int type)
+    {
+        if (type == 1)
+        {
+            selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
+            TowerManager.addTower(selectedGameTile.getTower());
+        }
+    }
+
     static public void initSelectedTile(int type)
     {
         if (type == 0)
@@ -37,6 +55,5 @@ static class ActionManager
             selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
             selectedMenuTile.setSelected(true);
         }
-
     }
 }

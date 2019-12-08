@@ -18,9 +18,14 @@ class Tile
         return pos;
     }
 
-    public void setSelected(Boolean _selected)
+    public boolean isSelected()
     {
-        selected = _selected;
+        return selected;
+    }
+
+    public void setSelected(Boolean selected)
+    {
+        this.selected = selected;
     }
 
     void display()

@@ -9,6 +9,11 @@ static class GameManager
         return;
     }
 
+    protected static int getGameState()
+    {
+        return gameState;
+    }
+
     public static Boolean inStartMenu()
     {
         return gameState == 0;
