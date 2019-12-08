@@ -25,8 +25,13 @@ static class ActionManager
 
     static public void placeTowerAtSelected(int type)
     {
-        if (selectedGameTile.isPath() || selectedGameTile.hasTower())
+        if (selectedGameTile.isPath())
         {
+            return;
+        }
+        if (selectedGameTile.hasTower())
+        {
+            PlayerController.swapSelection();
             return;
         }
         if (type == 1)
