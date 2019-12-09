@@ -3,10 +3,12 @@ class Base
     private int hp;
     private int hpMax;
 
-    private final int RADIUS = TILE_WIDTH;
+    private final int RADIUS = TILE_WIDTH / 2;
 
     private final int NUM_EDGES = 50;
     private final int NUM_EDGES_MAX = NUM_EDGES - MINIMUM_POLY_EDGES;
+
+    private boolean oneMoreHit = true;
     
     private Position pos;
 
@@ -27,6 +29,11 @@ class Base
         hp -= damage;
         if (hp <= 0)
         {
+            if (oneMoreHit)
+            {
+                oneMoreHit = false;
+                return false;
+            }
             return true;
         }
         return false;
@@ -40,7 +47,9 @@ class Base
 
     public void display()
     {
-        fill(255);
+        strokeWeight(THICK_STROKE_SIZE);
+        stroke(WHITE);
+        fill(WHITE, OPACITY_INVISIBLE);
         polygon(pos.getX(), pos.getY(), RADIUS, getEdges());
     }
 }

@@ -1,30 +1,41 @@
-class GoldManager
+static class GoldManager
 {
-    private int gold = 0;
-    private int previousFrame = 0;
+    private static int gold = 0;
+    private static int previousFrame = 0;
 
-    private final int GOLD_INCREMENT = 1;
+    private static final int GOLD_INCREMENT = 1;
+
+    public static boolean purchase(int cost)
+    {
+        if (gold >= cost)
+        {
+            removeGold(cost);
+            return true;
+        }
+        return false;
+    }
     
-    public int getGold()
+    public static int getGold()
     {
         return gold;
     }
 
-    public int addGold(int amount)
+    public static void addGold(int amount)
     {
         gold += amount;
     }
 
-    public int removeGold(int amount)
+    private static void removeGold(int amount)
     {
         gold -= amount;
     }
 
-    public int incrementGold(int frameCount)
+    public static void incrementGold(int frameCount)
     {
-        if (frameCount >= previousFrame)
+        if (frameCount >= previousFrame + FRAME_RATE)
         {
             gold += GOLD_INCREMENT;
+            previousFrame = frameCount;
         }
     }
 }

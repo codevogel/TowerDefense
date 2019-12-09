@@ -68,8 +68,11 @@ static class ActionManager
         }
         if (type == 1)
         {
-            selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
-            TowerManager.addTower(selectedGameTile.getTower());
+            if (GoldManager.purchase(LaserTower.PRICE))
+            {
+                selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
+                TowerManager.addTower(selectedGameTile.getTower());
+            }
         }
         return true;
     }

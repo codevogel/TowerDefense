@@ -6,11 +6,16 @@ final static int GRID_SIZE_Y = 9;
 
 final static int TILE_WIDTH = SIZE_X / 16;
 
-final static private int FRAME_RATE = 30;
+final static private int FRAME_RATE = 60;
+final static private float DELTA_TIME = 1.0 / FRAME_RATE;
 
 final static int DEFAULT_STROKE_SIZE = 1;
+final static int THICK_STROKE_SIZE = 3;
 
 final static int MINIMUM_POLY_EDGES = 3;
+
+final static color WHITE = 255;
+final static int OPACITY_INVISIBLE = 0;
 
 private StartMenu startMenu = new StartMenu();
 
@@ -79,9 +84,6 @@ void draw()
             WaveManager.nextWave();
         }
 
-        // Temporary: set grid stroke
-        stroke(125, 125);
-        strokeWeight(1);
         Map.display();
         EnemyManager.handleEnemies();
         BaseManager.display();
@@ -98,7 +100,6 @@ void draw()
         {
             ActionManager.startWave(frameCount);
         }
-        
         Map.display();
         BaseManager.display();
         TowerManager.displayTowers();
@@ -113,7 +114,7 @@ void draw()
     fill(255);
     text(String.format("Gamestate: %d", GameManager.getGameState()), 100, 100);
     text(String.format("Wave: %d", WaveManager.getWaveCount()), 100, 200);
-    text(String.format("Gold: %d"), GoldManager.getGold()), 100, 300;
+    text(String.format("Gold: %d", GoldManager.getGold()), 100, 300);
 }
 
 void handleSelectionInput()

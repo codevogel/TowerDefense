@@ -1,13 +1,14 @@
 class Enemy
 {
     Position pos;
-    private final int d = TILE_WIDTH;
+    private final int d = int(TILE_WIDTH * .75);
     private final int r = d / 2;
     private Style style;
 
     private int hp;
     private int hpMax;
     private int numEdgesMax;
+    private int award;
 
     private Boolean alive = true;
 
@@ -18,7 +19,7 @@ class Enemy
 
     private Waypoint nextWaypoint;
 
-    private int v = 5;
+    private int v = int(DELTA_TIME * 300f);
 
     Enemy(Position _pos, Position firstWaypointPosition)
     {
@@ -27,9 +28,15 @@ class Enemy
         waypointsPassed = 0;
         hp = 100;
         hpMax = hp;
+        award = 5;
         int numEdges = 15;
         numEdgesMax = numEdges - MINIMUM_POLY_EDGES;
         nextWaypoint = new Waypoint(pos, firstWaypointPosition);
+    }
+
+    public int getAward()
+    {
+        return award;
     }
 
     private int getEdges()
@@ -156,12 +163,14 @@ class Enemy
 
     public void display()
     {
-        fill(style.fillColor);
-        polygon(pos.x, pos.y, r, getEdges());
+        strokeWeight(THICK_STROKE_SIZE);
+        stroke(WHITE);
+        fill(WHITE, OPACITY_INVISIBLE);
+        polygon(pos.getX(), pos.getY(), r, getEdges());
     }
 
     class Style
     {
-        private final color fillColor = color(0, 0, 255);
+        private final int OPACITY = 0;
     }
 }

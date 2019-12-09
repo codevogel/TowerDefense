@@ -4,6 +4,8 @@ static class Map
 
     static void display()
     {        
+        tDInstance.stroke(125, 50);
+        tDInstance.strokeWeight(DEFAULT_STROKE_SIZE);
         for (GameTile[] gameTileList : grid)
         {
             for (GameTile t : gameTileList)

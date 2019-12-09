@@ -13,6 +13,7 @@ static class WaveManager
     private static final int ENEMIES_PER_WAVE = 5;
 
     private static int waveCount = 1;
+    private static int numEnemiesPassed = 0;
     private static int numEnemiesAdded = 0;
     private static int numEnemiesDead = 0;
     private static int numEnemiesToAdd = ENEMIES_PER_WAVE;
@@ -33,6 +34,11 @@ static class WaveManager
         numEnemiesDead += 1;
     }
 
+    public static void enemyPassed()
+    {
+        numEnemiesPassed += 1;
+    }
+
     public static void setFirstPositions()
     {
         Position firstIndex = LevelManager.getCurrentLevel().getWaypointIndeces()[0];
@@ -47,13 +53,14 @@ static class WaveManager
 
     public static Boolean waveOver()
     {
-        return numEnemiesDead == numEnemiesToAdd;
+        return numEnemiesDead + numEnemiesPassed == numEnemiesToAdd;
     }
 
     public static void nextWave()
     {
         EnemyManager.clearEnemyList();
         GameManager.setGameState(2);
+        numEnemiesPassed = 0;
         numEnemiesAdded = 0;
         numEnemiesDead = 0;
         waveCount++;
