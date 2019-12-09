@@ -146,10 +146,6 @@ void keyPressed()
     {
         setInput(true);
     }
-    if (key == ' ')
-    {
-        PlayerController.swapSelection();
-    }
 }
 
 void keyReleased()
