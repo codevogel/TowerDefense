@@ -26,7 +26,7 @@ class Tower
         d = TILE_WIDTH;
         r = d / 2;
         shooting = false;
-        range = d * 3;
+        range = int(d * 2.5);
         rangeD = range * 2;
     }
 }
