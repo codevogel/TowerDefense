@@ -64,7 +64,8 @@ void draw()
         background(0);
     }
     else if (GameManager.playing())
-    {
+    {   
+        GoldManager.incrementGold(frameCount);
         ActionManager.setSelectedTiles();
         handleSelectionInput();
 
@@ -110,8 +111,9 @@ void draw()
         startMenu.display();
     }
     fill(255);
-    text(String.format("Gamestate: %d", GameManager.getGameState()), 100 , 100);
-    text(String.format("Wave: %d", WaveManager.getWaveCount()), 100 , 200);
+    text(String.format("Gamestate: %d", GameManager.getGameState()), 100, 100);
+    text(String.format("Wave: %d", WaveManager.getWaveCount()), 100, 200);
+    text(String.format("Gold: %d"), GoldManager.getGold()), 100, 300;
 }
 
 void handleSelectionInput()
