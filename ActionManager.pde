@@ -7,6 +7,7 @@ static class ActionManager
     {
         initSelectedTile(0);
         initSelectedTile(1);
+        
     }
 
     static public void initSelectedTile(int type)
