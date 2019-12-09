@@ -9,12 +9,34 @@ static class ActionManager
         initSelectedTile(1);
     }
 
+    static public void initSelectedTile(int type)
+    {
+        if (type == 0)
+        {
+            selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
+            selectedGameTile.setSelected(true);
+        }
+        else 
+        {
+            selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
+            selectedMenuTile.setSelected(false);
+        }
+    }
+
+    static public GameTile getSelectedGameTile()
+    {
+        return selectedGameTile;
+    }
+
+    static public void handleSelectionInput()
+    {
+    }
+
     static public void handleStartOfWaveInput(int frameCount)
     {
         if (PlayerController.getStartWaveDown())
         {
             startWave(frameCount);
-            PlayerController.setStartWaveDown(false);
         }
     }
 
@@ -27,62 +49,35 @@ static class ActionManager
         }
     }
 
-    static public void placeTowerAt(int x, int y, int type)
-    {
-        GameTile tile = Map.grid[x][y];
-        if (tile.isPath() || tile.hasTower())
-        {
-            return;
-        }
-        if (type == 1)
-        {
-            
-            tile.setTower(tDInstance.new LaserTower(tile));
-        }
-    }
-
     static public void startWave(int frameCount)
     {
         GameManager.setGameState(1);
         WaveManager.startWave(frameCount);
     }
 
-    static public void placeTowerAtSelected(int type)
+    static public boolean placeTowerAtSelected(int type)
     {
         if (selectedGameTile.isPath())
         {
-            return;
+            return false;
         }
         if (selectedGameTile.hasTower())
         {
-            PlayerController.swapSelection();
-            return;
+            return false;
         }
         if (type == 1)
         {
             selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
             TowerManager.addTower(selectedGameTile.getTower());
         }
+        return true;
     }
 
-    static public void initSelectedTile(int type)
+    static public void setSelectedTiles()
     {
-        if (type == 0)
+        if (PlayerController.isMapSelected())
         {
-            selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
-            selectedGameTile.setSelected(true);
-        }
-        else 
-        {
-            selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
-            selectedMenuTile.setSelected(true);
-        }
-    }
-
-    static public void getSelectedTile()
-    {
-        if (PlayerController.selectingMap)
-        {
+            selectedMenuTile.setSelected(false);
             selectedGameTile.setSelected(false);
             selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
             selectedGameTile.setSelected(true);

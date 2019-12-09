@@ -10,10 +10,11 @@ final static private int FRAME_RATE = 30;
 
 final static int DEFAULT_STROKE_SIZE = 1;
 
+final static int MINIMUM_POLY_EDGES = 3;
+
 private StartMenu startMenu = new StartMenu();
 
 private ActionManager actionManager;
-
 /**
 Processing parses this contents of this .pde file into a TowerDefense class
 All other .pde files are then parsed into nested classes of the TowerDefense class
@@ -40,10 +41,33 @@ void setup()
     LevelManager.initLevels();
 }
 
+public void polygon(float x, float y, float radius, int npoints) 
+{
+    if (npoints > 0)
+    {
+        float angle = TWO_PI / npoints;
+        beginShape();
+        for (float a = 0; a < TWO_PI; a += angle) 
+        {
+            float sx = x + cos(a) * radius;
+            float sy = y + sin(a) * radius;
+            vertex(sx, sy);
+        }
+        endShape(CLOSE);
+    }
+}
+
 void draw()
 {
-    if (GameManager.playing())
+    if (GameManager.gameOver())
     {
+        background(0);
+    }
+    else if (GameManager.playing())
+    {
+        ActionManager.setSelectedTiles();
+        handleSelectionInput();
+
         if (WaveManager.started())
         {
             WaveManager.spawnEnemies(frameCount);
@@ -53,27 +77,33 @@ void draw()
         {
             WaveManager.nextWave();
         }
+
         // Temporary: set grid stroke
         stroke(125, 125);
         strokeWeight(1);
         Map.display();
-
-
-        SideMenu.display();
         EnemyManager.handleEnemies();
+        BaseManager.display();
+        SideMenu.display();
         TowerManager.displayTowers();
         TowerManager.fireTowers();
-
-        ActionManager.handlePlayingInput();
     }
     else if (GameManager.startOfWave())
     {
+        ActionManager.setSelectedTiles();
+        handleSelectionInput();
+
+        if (PlayerController.getStartWaveDown())
+        {
+            ActionManager.startWave(frameCount);
+        }
+        
         Map.display();
+        BaseManager.display();
         TowerManager.displayTowers();
         SideMenu.display();
+        fill(255);
         text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
-
-        ActionManager.handleStartOfWaveInput(frameCount);
     }
     else if (GameManager.inStartMenu())
     {
@@ -84,57 +114,69 @@ void draw()
     text(String.format("Wave: %d", WaveManager.getWaveCount()), 100 , 200);
 }
 
+void handleSelectionInput()
+{
+    if (PlayerController.getPlaceTowerDown())
+    {
+        if (!ActionManager.getSelectedGameTile().hasTower())
+        {
+            ActionManager.placeTowerAtSelected(1);
+        }
+        else 
+        {
+            PlayerController.swapSelection();
+        }
+    }
+}
+
 void mousePressed()
 {
     if (GameManager.inStartMenu())
     {
         if (startMenu.checkForStart())
         {
-            startNewGame();
+            startNewGame(2);
         }
-    }
-    else if (GameManager.playing())
-    {
-        
-    }
-}
-
-
-void selectCurrentTiles()
-{
-    if (InputTimer.inputAllowed(frameCount))
-    {
-        PlayerController.setSelection();
-        ActionManager.getSelectedTile();
     }
 }
 
 void keyPressed()
 {
-    setInput();
+    if (InputTimer.inputAllowed(frameCount))
+    {
+        setInput(true);
+    }
     if (key == ' ')
     {
         PlayerController.swapSelection();
     }
 }
 
-void setInput()
-{
-    PlayerController.setKeyState(key, true);
-    selectCurrentTiles();
-}
-
 void keyReleased()
 {
-    PlayerController.setKeyState(key, false);
+    setInput(false);
 }
 
-void startNewGame()
+void setInput(boolean down)
+{
+    PlayerController.setKeyState(key, down);
+    PlayerController.setSelection();
+}
+
+void startNewGame(int currentLevelNo)
 {
     // Set the current level
-    LevelManager.setCurrentLevel(1);
+    LevelManager.setCurrentLevel(currentLevelNo);
     // Initialize the map
     Map.initGrid();
+
+    Position[] waypointIndeces = LevelManager.getCurrentLevel().getWaypointIndeces();
+    Position lastWaypointIndex = waypointIndeces[waypointIndeces.length - 1];
+    Position lastWaypointPos = Map.grid[lastWaypointIndex.getX()][lastWaypointIndex.getY()].getPos();
+
+    EnemyManager.setFinalWaypoint(lastWaypointPos);
+    BaseManager.setBase(new Base(lastWaypointPos));
+
     WaveManager.setFirstPositions();
     // Initialize the sidemenu
     SideMenu.initMenu();

@@ -28,6 +28,20 @@ static class GameManager
     {
         return gameState == 2;
     }
+
+    public static Boolean gameOver()
+    {
+        if (BaseManager.getBase() != null)
+        {
+            if (BaseManager.getBase().isAlive())
+            {
+                return false;
+            }
+            gameState = 3;
+            return true;
+        }
+        return false;
+    }
     
     public static void setCurrentLevel(int levelNo)
     {

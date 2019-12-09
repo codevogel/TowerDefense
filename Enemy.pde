@@ -1,11 +1,14 @@
 class Enemy
 {
     Position pos;
-    private final int d = TILE_WIDTH / 2;
+    private final int d = TILE_WIDTH;
     private final int r = d / 2;
     private Style style;
 
     private int hp;
+    private int hpMax;
+    private int numEdgesMax;
+
     private Boolean alive = true;
 
     private Boolean moving = true;
@@ -15,7 +18,7 @@ class Enemy
 
     private Waypoint nextWaypoint;
 
-    private int v = 10;
+    private int v = 30;
 
     Enemy(Position _pos, Position firstWaypointPosition)
     {
@@ -23,7 +26,16 @@ class Enemy
         style = new Style();
         waypointsPassed = 0;
         hp = 100;
+        hpMax = hp;
+        int numEdges = 15;
+        numEdgesMax = numEdges - MINIMUM_POLY_EDGES;
         nextWaypoint = new Waypoint(pos, firstWaypointPosition);
+    }
+
+    private int getEdges()
+    {
+        float percentile = float(hp) / hpMax;
+        return 3 + int(percentile * numEdgesMax);
     }
 
     public Boolean isAlive()
@@ -37,7 +49,6 @@ class Enemy
         if (hp <= 0)
         {
             alive = false;
-            WaveManager.enemyKilled();
             return true;
         }
         return false;
@@ -116,8 +127,6 @@ class Enemy
         else 
         {
             int nextY = nextWaypoint.pos.getY();
-            // print(String.format("currentPos: %d, nextY: %d\n", pos.getY(), nextY));
-            // print(nextWaypoint.isForward() + "\n");
             
             // and forwards
             if (nextWaypoint.isForward())
@@ -148,9 +157,9 @@ class Enemy
     public void display()
     {
         fill(style.fillColor);
-        circle(pos.x, pos.y, d);
+        polygon(pos.x, pos.y, r, getEdges());
     }
-    
+
     class Style
     {
         private final color fillColor = color(0, 0, 255);

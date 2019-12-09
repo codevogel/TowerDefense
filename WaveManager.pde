@@ -10,7 +10,7 @@ static class WaveManager
     private static Position firstEnemyPosition;
     private static Position firstWaypointPosition;
 
-    private static final int ENEMIES_PER_WAVE = 3;
+    private static final int ENEMIES_PER_WAVE = 5;
 
     private static int waveCount = 1;
     private static int numEnemiesAdded = 0;

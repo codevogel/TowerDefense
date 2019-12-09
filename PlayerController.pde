@@ -26,6 +26,11 @@ static class PlayerController
         key = k;
     }
 
+    static public boolean isMapSelected()
+    {
+        return selectingMap;
+    }
+
     // For buttons that shouldn't be able to be held down
     static protected void resetSinglePresses()
     {
@@ -93,7 +98,9 @@ static class PlayerController
 
     static public boolean getStartWaveDown()
     {
-        return startWaveDown;
+        boolean result = startWaveDown;
+        startWaveDown = false;
+        return result;
     }
     
     static public void setStartWaveDown(boolean down)
@@ -108,7 +115,9 @@ static class PlayerController
 
     static public boolean getPlaceTowerDown()
     {
-        return placeTowerDown;
+        boolean result = placeTowerDown;
+        placeTowerDown = false;
+        return result;
     }
     
     static public void setPlaceTowerDown(boolean down)
@@ -126,11 +135,13 @@ static class PlayerController
         if (selectingMap)
         {
             selectingMap = false;
+            selectionMenu = 0;
         }
         else 
         {
             selectingMap = true;
         }
+        // ActionManager.getSelectedTile();
         return;
     }
 

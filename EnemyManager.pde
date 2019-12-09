@@ -2,6 +2,13 @@ static class EnemyManager
 {
     protected static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 
+    private static Position finalWaypoint;
+
+    protected static void setFinalWaypoint(Position waypoint)
+    {
+        finalWaypoint = waypoint;
+    }
+
     protected static void addEnemy(Enemy e)
     {
         enemyList.add(e);
@@ -26,10 +33,15 @@ static class EnemyManager
     {
         IntList indexesToRemove = new IntList();
         int index = 0;
-        for (Enemy e: enemyList)
+        for (Enemy e : enemyList)
         {
             if (!e.isAlive())
             {
+                indexesToRemove.append(index);
+            }
+            if (e.pos.getX() == finalWaypoint.getX() && e.pos.getY() == finalWaypoint.getY())
+            {
+                BaseManager.getBase().takeDamage(10);
                 indexesToRemove.append(index);
             }
             index++;
@@ -37,6 +49,7 @@ static class EnemyManager
 
         for (int i : indexesToRemove)
         {
+            WaveManager.enemyKilled();
             enemyList.remove(i);
         }
     }
