@@ -18,7 +18,7 @@ class Enemy
 
     private Waypoint nextWaypoint;
 
-    private int v = 30;
+    private int v = 5;
 
     Enemy(Position _pos, Position firstWaypointPosition)
     {
