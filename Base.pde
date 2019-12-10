@@ -74,6 +74,6 @@ class Base
         strokeWeight(THICK_STROKE_SIZE);
         stroke(WHITE);
         fill(WHITE, OPACITY_INVISIBLE);
-        polygon(pos.getX(), pos.getY(), RADIUS, getEdges());
+        polygon(pos.getX(), pos.getY(), RADIUS, getPoints());
     }
 }
