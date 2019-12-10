@@ -8,22 +8,22 @@ static class Position
         y = _y;
     }
 
-    protected int getX()
+    public int getX()
     {
         return x;
     }
 
-    protected int getY()
+    public int getY()
     {
         return y;
     }
 
-    protected void setX(int _x)
+    public void setX(int _x)
     {
         x = _x;
     }
 
-    protected void setY(int _y)
+    public void setY(int _y)
     {
         y = _y;
     }
