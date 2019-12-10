@@ -25,7 +25,7 @@ static class GoldManager
         gold += amount;
     }
 
-    private static void removeGold(int amount)
+    public static void removeGold(int amount)
     {
         gold -= amount;
     }
