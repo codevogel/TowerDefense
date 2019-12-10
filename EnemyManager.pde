@@ -37,10 +37,13 @@ static class EnemyManager
         {
             if (!e.isAlive())
             {
+                WaveManager.enemyKilled();
+                GoldManager.addGold(e.getAward());
                 indexesToRemove.append(index);
             }
             if (e.pos.getX() == finalWaypoint.getX() && e.pos.getY() == finalWaypoint.getY())
             {
+                WaveManager.enemyPassed();
                 BaseManager.getBase().takeDamage(10);
                 indexesToRemove.append(index);
             }
@@ -49,7 +52,6 @@ static class EnemyManager
 
         for (int i : indexesToRemove)
         {
-            WaveManager.enemyKilled();
             enemyList.remove(i);
         }
     }

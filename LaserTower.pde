@@ -3,6 +3,9 @@ class LaserTower extends Tower
     private Enemy enemy;
     private Boolean shooting = false;
     private Style style;
+
+    public static final int PRICE = 5;
+
     LaserTower(GameTile parent)
     {
         super(parent);
