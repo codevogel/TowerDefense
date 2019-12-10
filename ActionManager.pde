@@ -1,61 +1,47 @@
+/**
+ * Manages game actions
+ * @author Kamiel de Visser | 500838438
+ */
 static class ActionManager
 {
+    // Holds the selected tiles
     static public GameTile selectedGameTile;
     static public MenuTile selectedMenuTile;
 
+    /**
+     * Initializes the selected tiles
+     */ 
     static public void initSelectedTiles()
     {
-        initSelectedTile(0);
-        initSelectedTile(1);
-        
+        selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
+        selectedGameTile.setSelected(true);
+        selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
+        selectedMenuTile.setSelected(false);      
     }
 
-    static public void initSelectedTile(int type)
-    {
-        if (type == 0)
-        {
-            selectedGameTile = Map.grid[PlayerController.selectionMap.x][PlayerController.selectionMap.y];
-            selectedGameTile.setSelected(true);
-        }
-        else 
-        {
-            selectedMenuTile = SideMenu.buttons[PlayerController.selectionMenu];
-            selectedMenuTile.setSelected(false);
-        }
-    }
-
+    /**
+     * Gets the currently selected game tile
+     */ 
     static public GameTile getSelectedGameTile()
     {
         return selectedGameTile;
     }
 
-    static public void handleSelectionInput()
-    {
-    }
-
-    static public void handleStartOfWaveInput(int frameCount)
-    {
-        if (PlayerController.getStartWaveDown())
-        {
-            startWave(frameCount);
-        }
-    }
-
-    static public void handlePlayingInput()
-    {
-        if (PlayerController.getPlaceTowerDown())
-        {
-            placeTowerAtSelected(1);
-            PlayerController.setPlaceTowerDown(false);
-        }
-    }
-
-    static public void startWave(int frameCount)
+    /**
+     * Sets the gamestate to playing and starts the wave
+     * @param frameNo the frame the wave is started
+     */
+    static public void startWave(int frameNo)
     {
         GameManager.setGameState(1);
-        WaveManager.startWave(frameCount);
+        WaveManager.startWave(frameNo);
     }
-
+    
+    /**
+     * If possible, places a type of tower at the currently selected tile
+     * @return true if tower has been placed
+     *         false if tile is path or already contains a tower. 
+     */
     static public boolean placeTowerAtSelected(int type)
     {
         if (selectedGameTile.isPath())
@@ -77,6 +63,9 @@ static class ActionManager
         return true;
     }
 
+    /**
+     * Undo's the previously selected tiles, then gets the newly selected tiles
+     */
     static public void setSelectedTiles()
     {
         if (PlayerController.isMapSelected())
