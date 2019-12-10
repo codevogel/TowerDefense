@@ -6,7 +6,7 @@ static class LevelManager
 
     final static private Level[] levels = new Level[NUM_LEVELS];
 
-    protected static void initLevels()
+    public static void initLevels()
     {
         for (int i = 0; i < NUM_LEVELS; i++)
         {
