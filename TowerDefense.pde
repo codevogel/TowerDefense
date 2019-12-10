@@ -25,6 +25,7 @@ instantiate TowerDefense's nested classes or make use of Processing's methods.
 */
 public static TowerDefense tDInstance;
 
+
 void settings()
 {
     // Get a reference to this TowerDefense object
@@ -41,6 +42,13 @@ void setup()
     LevelManager.initLevels();
 }
 
+/**
+ * Draws a polygon shape
+ * @param x the x position this polygon should be drawn from
+ * @param y the y position this polygon should be drawn from
+ * @param radius the radius of this polygon
+ * @param npoints the n amount of points this polygon is made from
+ */
 public void polygon(float x, float y, float radius, int npoints) 
 {
     if (npoints > 0)
@@ -67,8 +75,10 @@ void draw()
     {   
         GoldManager.incrementGold(frameCount);
         ActionManager.setSelectedTiles();
-        handleSelectionInput();
-
+        if (PlayerController.getPlaceTowerDown())
+        {
+            placeTowerOrSwapSelection();
+        }
         if (WaveManager.started())
         {
             WaveManager.spawnEnemies(frameCount);
@@ -92,7 +102,10 @@ void draw()
     else if (GameManager.startOfWave())
     {
         ActionManager.setSelectedTiles();
-        handleSelectionInput();
+        if (PlayerController.getPlaceTowerDown())
+        {
+            placeTowerOrSwapSelection();
+        }
 
         if (PlayerController.getStartWaveDown())
         {
@@ -116,21 +129,24 @@ void draw()
     text(String.format("Gold: %d"), GoldManager.getGold()), 100, 300;
 }
 
-void handleSelectionInput()
+/** 
+ * Places a tower or swaps the selection if a tower is already there
+ */
+void placeTowerOrSwapSelection()
 {
-    if (PlayerController.getPlaceTowerDown())
+    if (!ActionManager.getSelectedGameTile().hasTower())
     {
-        if (!ActionManager.getSelectedGameTile().hasTower())
-        {
-            ActionManager.placeTowerAtSelected(1);
-        }
-        else 
-        {
-            PlayerController.swapSelection();
-        }
+        ActionManager.placeTowerAtSelected(1);
+    }
+    else 
+    {
+        PlayerController.swapSelection();
     }
 }
 
+/**
+ * Called whenever the mouse is clicked
+ */
 void mousePressed()
 {
     if (GameManager.inStartMenu())
@@ -142,6 +158,9 @@ void mousePressed()
     }
 }
 
+/**
+ * Called whenever a key is pressed down
+ */
 void keyPressed()
 {
     if (InputTimer.inputAllowed(frameCount))
@@ -150,17 +169,28 @@ void keyPressed()
     }
 }
 
+/**
+ * Called whenever a key is released
+ */
 void keyReleased()
 {
     setInput(false);
 }
 
+/**
+ * Sets the PlayerController's new input states
+ *  @param down whether the key has been pressed (true) or released (false)
+ */
 void setInput(boolean down)
 {
     PlayerController.setKeyState(key, down);
     PlayerController.setSelection();
 }
 
+/**
+ * Starts a new game by (re)loading the level
+ * @param currentLevelNo the no. of the level that is supposed to be loaded.
+ */
 void startNewGame(int currentLevelNo)
 {
     // Set the current level
