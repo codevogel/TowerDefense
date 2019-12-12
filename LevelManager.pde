@@ -22,11 +22,6 @@ static class LevelManager
     public static void setCurrentLevel(int levelNo)
     {
         currentLevelNo = levelNo;
-        setCurrentLevel();
-    }
-
-    public static void setCurrentLevel()
-    {
         currentLevel = levels[currentLevelNo - 1];
     }
 
@@ -101,7 +96,7 @@ static class LevelManager
 
     private static Position parseCoordLine(String line)
     {
-        StringBuilder parsedLine = new StringBuilder("");
+        StringBuilder parsedLine = new StringBuilder();
         int posX = 0;
         int posY = 0;
         for (int i = 0; i < line.length(); i++)
