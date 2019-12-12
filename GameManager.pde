@@ -3,6 +3,8 @@ static class GameManager
     protected static int gameState = 0;
     private static int currentLevel = 0;
 
+    private final static int START_MENU_STATE = 0;
+
     protected static void setGameState(int state)
     {
         gameState = state;
@@ -16,7 +18,7 @@ static class GameManager
 
     public static Boolean inStartMenu()
     {
-        return gameState == 0;
+        return gameState == START_MENU_STATE;
     }
 
     public static Boolean playing()
