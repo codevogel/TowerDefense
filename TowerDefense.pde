@@ -42,9 +42,11 @@ void setup()
 {
     frameRate(FRAME_RATE);
     rectMode(CENTER);
-    textMode(CENTER);
-    textSize(40);
+    textAlign(CENTER);
     LevelManager.initLevels();
+    
+    //temp
+    textSize(40);
 }
 
 /**
@@ -54,7 +56,7 @@ void setup()
  * @param radius the radius of this polygon
  * @param npoints the n amount of points this polygon is made from
  */
-public void polygon(float x, float y, float radius, int npoints) 
+public void polygon(float x, float y, float radius, int npoints)
 {
     if (npoints > 0)
     {
@@ -80,14 +82,15 @@ void draw()
     {   
         GoldManager.incrementGold(frameCount);
         ActionManager.setSelectedTiles();
+
         if (PlayerController.getPlaceTowerDown())
         {
             placeTowerOrSwapSelection();
         }
+
         if (WaveManager.started())
         {
             WaveManager.spawnEnemies(frameCount);
-
         }
         if (WaveManager.waveOver())
         {
@@ -97,9 +100,9 @@ void draw()
         Map.display();
         EnemyManager.handleEnemies();
         BaseManager.display();
-        SideMenu.display();
         TowerManager.displayTowers();
         TowerManager.fireTowers();
+        SideMenu.display();
     }
     else if (GameManager.startOfWave())
     {
@@ -108,7 +111,6 @@ void draw()
         {
             placeTowerOrSwapSelection();
         }
-
         if (PlayerController.getStartWaveDown())
         {
             ActionManager.startWave(frameCount);
@@ -117,6 +119,8 @@ void draw()
         BaseManager.display();
         TowerManager.displayTowers();
         SideMenu.display();
+
+        // temp
         fill(255);
         text("hit j to start wave", SIZE_X / 2, SIZE_Y / 2);
     }
@@ -190,12 +194,12 @@ void setInput(boolean down)
 
 /**
  * Starts a new game by (re)loading the level
- * @param currentLevelNo the no. of the level that is supposed to be loaded.
+ * @param levelToStart the no. of the level that is supposed to be loaded.
  */
-void startNewGame(int currentLevelNo)
+void startNewGame(int levelToStart)
 {
     // Set the current level
-    LevelManager.setCurrentLevel(currentLevelNo);
+    LevelManager.setCurrentLevel(1);
     // Initialize the map
     Map.initGrid();
 
@@ -211,6 +215,6 @@ void startNewGame(int currentLevelNo)
     SideMenu.initMenu();
     // Select the initially selected tiles
     ActionManager.initSelectedTiles();
-    // Change the gamestate to paused
+    // Change the gamestate to start of wave
     GameManager.setGameState(2);
 }
