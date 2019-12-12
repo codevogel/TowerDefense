@@ -141,7 +141,6 @@ static class PlayerController
         {
             selectingMap = true;
         }
-        // ActionManager.getSelectedTile();
         return;
     }
 
@@ -214,7 +213,7 @@ static class PlayerController
                 if (selectionMenu != 0)
                 {
                     // move selection up
-                    selectionMenu -=1;
+                    selectionMenu -= 1;
                 }
                 else
                 {
