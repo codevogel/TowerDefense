@@ -1,4 +1,5 @@
 # Makes git ignore the following folders
 .history
 .vscode
+.idea
 out
