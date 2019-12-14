@@ -33,6 +33,7 @@ class LaserTower extends Tower
         // if target is still in range
         if (isEnemyInRange(enemy))
         {
+            SoundManager.playSound(Sounds.LASER);
             // Let target take damage (returns true if target dies)
             if (enemy.takeDamage(2))
             {
