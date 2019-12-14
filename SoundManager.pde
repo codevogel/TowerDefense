@@ -67,14 +67,6 @@ static class SoundManager
                 int soundID = 0;
                 playSound(soundID);
                 break;
-            case LASER:
-                int soundID = 0;
-                playSound(soundID);
-                break;
-            case LASER:
-                int soundID = 0;
-                playSound(soundID);
-                break;
         }
     }
 
