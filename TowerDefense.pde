@@ -19,6 +19,8 @@ final static int OPACITY_INVISIBLE = 0;
 
 private StartMenu startMenu = new StartMenu();
 
+import processing.sound.*;
+
 private ActionManager actionManager;
 /**
 Processing parses this contents of this .pde file into a TowerDefense class
@@ -44,7 +46,7 @@ void setup()
     rectMode(CENTER);
     textAlign(CENTER);
     LevelManager.initLevels();
-    
+    SoundManager.loadSounds();
     //temp
     textSize(40);
 }
