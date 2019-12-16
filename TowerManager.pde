@@ -37,6 +37,18 @@ static class TowerManager
                     currentTower.checkForEnemy();
                 }
             }
+            else if (tower instanceof FreezeTower)
+            {
+                FreezeTower currentTower = (FreezeTower) tower;
+                if (currentTower.isShooting())
+                {
+                    currentTower.shoot();
+                }
+                else 
+                {
+                    currentTower.getTargets();
+                }
+            }
         }
     }
 }

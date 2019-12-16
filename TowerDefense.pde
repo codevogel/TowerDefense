@@ -76,6 +76,7 @@ public void polygon(float x, float y, float radius, int npoints)
 
 void draw()
 {
+    FrameCounter.setCurrentFrame(frameCount);
     if (GameManager.gameOver())
     {
         background(0);
