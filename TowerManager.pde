@@ -16,6 +16,10 @@ static class TowerManager
                 LaserTower currentTower = (LaserTower) t;
                 currentTower.display();
             }
+            else {
+                FreezeTower currentTower = (FreezeTower) t;
+                currentTower.display();
+            }
         }
     }
 

@@ -42,7 +42,7 @@ static class ActionManager
      * @return true if tower has been placed
      *         false if tile is path or already contains a tower. 
      */
-    static public boolean placeTowerAtSelected(int type)
+    static public boolean placeTowerAtSelected(Towers type)
     {
         if (selectedGameTile.isPath())
         {
@@ -52,11 +52,19 @@ static class ActionManager
         {
             return false;
         }
-        if (type == 1)
+        if (type == Towers.LASER)
         {
             if (GoldManager.purchase(LaserTower.PRICE))
             {
                 selectedGameTile.setTower(tDInstance.new LaserTower(selectedGameTile));
+                TowerManager.addTower(selectedGameTile.getTower());
+            }
+        }
+        else if (type == Towers.FREEZE)
+        {
+            if (GoldManager.purchase(LaserTower.PRICE))
+            {
+                selectedGameTile.setTower(tDInstance.new FreezeTower(selectedGameTile));
                 TowerManager.addTower(selectedGameTile.getTower());
             }
         }

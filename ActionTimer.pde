@@ -1,20 +1,22 @@
-class Timer
-{
-    int previousFrame;
+// class Timer
+// {
+//     int checkpointFrame;
+//     int frameDuration;
 
-    public ActionTimer(int currentFrame)
-    {
-        previousFrame = currentFrame;
-    }
+//     public Timer(int frameDuration)
+//     {
+//         this.frameDuration = frameDuration;
+//         checkPointFrame = FrameCounter.getCurrentFrame() + frameDuration;
+//     }
 
-    public boolean actionAllowed(int currentFrame)
-    {
-        if (currentFrame - previousFrame > 0)
-        {
-            return true;
-        }
-        return false;
-    }
+//     public boolean actionAllowed(int currentFrame)
+//     {
+//         if (currentFrame - previousFrame > 0)
+//         {
+//             return true;
+//         }
+//         return false;
+//     }
 
 
-}
+// }

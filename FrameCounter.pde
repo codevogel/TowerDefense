@@ -1,6 +1,6 @@
 static class FrameCounter
 {
-    private int currentFrame = 0;
+    private static int currentFrame = 0;
 
     public static void setCurrentFrame(int frameCount)
     {   

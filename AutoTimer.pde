@@ -1,17 +1,19 @@
-class AutoTimer extends Timer
+class AutoTimer
 {
-    int previousFrame;
+    private int nextActivationFrame = 0;
+    private int actionDuration; 
 
-    public AutoTimer(int currentFrame)
+    public AutoTimer(int actionDuration)
     {
-        super(currentFrame);
+        this.actionDuration = actionDuration;
     }
 
-    public boolean actionAllowed(int currentFrame)
+    public boolean actionAllowed()
     {
-        if (currentFrame - previousFrame > 0)
+        int currentFrame = FrameCounter.getCurrentFrame();
+        if (currentFrame - nextActivationFrame > 0)
         {
-            previousFrame = currentFrame;
+            nextActivationFrame = currentFrame + actionDuration;
             return true;
         }
         return false;

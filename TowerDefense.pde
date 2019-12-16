@@ -144,7 +144,7 @@ void placeTowerOrSwapSelection()
 {
     if (!ActionManager.getSelectedGameTile().hasTower())
     {
-        ActionManager.placeTowerAtSelected(1);
+        ActionManager.placeTowerAtSelected(Towers.FREEZE);
     }
     else 
     {

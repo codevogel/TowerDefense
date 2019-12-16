@@ -7,60 +7,29 @@ class FreezeTower extends Tower
 
     private ArrayList<Enemy> targets;
 
-    private AutoTimer shotTimer;
-    private AutoTimer freezeStepTimer;
-
-    private int currentV;
-    private int freezeStep;
-
-    private final int DEFAULT_V = 25;
-    private final int FROZEN_V = 10;
-    private final int NUM_STEPS = 5;
-    private final int V_PER_STEP = DEFAULT_V - FROZEN_V / NUM_STEPS;
 
     FreezeTower(GameTile parent)
     {
         super(parent);
         style = new Style();
         targets = new ArrayList<Enemy>();
-        shotTimer = new AutoTimer(FrameCounter.getCurrentFrame());
     }
     
     public void shoot()
     {
-        int currentFrame = FrameCounter.getCurrentFrame();
-        if (shotTimer.actionAllowed(currentFrame))
+        getTargets();
+        if (shooting)
         {
-            startFreezing();
+            freezeEnemies();
         }
-        if (freezing)
-        {
-            if (freezeStepTimer.actionAllowed(currentFrame))
-            {
-                freezeEnemies();
-            }
-        }
-    }
-
-    public void startFreezing()
-    {
-        freezing = true;
-        currentV = FROZEN_V;
-        freezeStep = 1;
     }
 
     private void freezeEnemies()
     {
         for (Enemy e : targets)
         {
-            e.setV(getCurrentV(freezeStep));
+            e.setFrozen(true);
         }
-        freezeStep += 1;
-    }
-
-    private void getCurrentV(int freezeStep)
-    {
-        currentV = FROZEN_V + freezeStep - 1 * V_PER_STEP;
     }
 
     public void display()
@@ -77,8 +46,6 @@ class FreezeTower extends Tower
     private void startShooting()
     {
         shooting = true;
-        startShootingFrame = FrameCounter.getCurrentFrame();
-        stopShootingFrame = startShootingFrame + FRAMES_FROZEN;
     }
 
     private void stopShooting()
@@ -95,6 +62,14 @@ class FreezeTower extends Tower
     // Look for enemies in range of this tower
     public void getTargets()
     {
+        for (Enemy e : targets)
+{
+            if (isEnemyInRange(e))
+            {
+                continue;
+            }
+            e.frozen = false;
+        }
         targets = new ArrayList<Enemy>();
         for (Enemy e : EnemyManager.enemyList)
         {
@@ -106,7 +81,10 @@ class FreezeTower extends Tower
         if (targets.size() > 0)
         {
             shooting = true;
-        } 
+        }
+        else {
+            shooting = false;
+        }
     }
 
     // Checks whether a specific enemy is in range of the tower.

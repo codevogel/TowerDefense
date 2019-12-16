@@ -10,16 +10,25 @@ class Enemy
     private int numEdgesMax;
     private int award;
 
-    private Boolean alive = true;
+    private boolean alive = true;
 
-    private Boolean moving = true;
-    private Boolean reachedLastPos = false;
+    private boolean moving = true;
+    private boolean frozen = false;
+
+    private boolean reachedLastPos = false;
 
     private int waypointsPassed;
 
     private Waypoint nextWaypoint;
+    
+    public static final float DEFAULT_V = TILE_WIDTH / 25f;
+    public static final float FROZEN_V = DEFAULT_V * .60f;
+    public static final float RECOVER_V = .125f;
+    public static final int RECOVER_FRAMES_STEP = 20;
 
-    private int v = int(DELTA_TIME * 300f);
+    private AutoTimer freezeTimer;
+
+    private float v = DEFAULT_V;
 
     Enemy(Position _pos, Position firstWaypointPosition)
     {
@@ -32,6 +41,17 @@ class Enemy
         int numEdges = 15;
         numEdgesMax = numEdges - MINIMUM_POLY_EDGES;
         nextWaypoint = new Waypoint(pos, firstWaypointPosition);
+        freezeTimer = new AutoTimer(RECOVER_FRAMES_STEP);
+    }
+
+    public void setFrozen(boolean frozen)
+    {
+        this.frozen = frozen;
+    }
+
+    public void setV(int v)
+    {
+        this.v = v;
     }
 
     public int getAward()
@@ -100,8 +120,27 @@ class Enemy
         return moving;
     }
 
+    private float getV()
+    {
+        if (frozen)
+        {
+            return FROZEN_V;
+        }
+        else {
+            if (freezeTimer.actionAllowed())
+            {
+                if (v < DEFAULT_V)
+                {
+                    return constrain(v + RECOVER_V, FROZEN_V, DEFAULT_V);
+                }
+            }
+        }
+        return v;
+    }
+
     void move()
     {
+        v = getV();
         // if enemy has to move horizontally
         if (nextWaypoint.isHorizontal())
         {
@@ -109,7 +148,7 @@ class Enemy
             // and forwards
             if (nextWaypoint.isForward())
             {
-                int newX = pos.getX() + v;
+                int newX = int( pos.getX() + v );
                 pos.setX(newX);
                 if (newX >= nextX)
                 {
@@ -120,7 +159,7 @@ class Enemy
                 return;
             }
             // or backwards
-            int newX = pos.getX() - v;
+            int newX = int (pos.getX() - v );
             pos.setX(newX);
             if (newX <= nextX)
             {
@@ -138,7 +177,7 @@ class Enemy
             // and forwards
             if (nextWaypoint.isForward())
             {
-                int newY = pos.getY() + v;
+                int newY = int (pos.getY() + v);
                 pos.setY(newY);
                 if (newY >= nextY)
                 {
@@ -149,7 +188,7 @@ class Enemy
                 return;
             }
             // or backwards
-            int newY = pos.getY() - v;
+            int newY = int(pos.getY() - v);
             pos.setY(newY);
             if (newY <= nextY)
             {
@@ -163,6 +202,7 @@ class Enemy
 
     public void display()
     {
+        text(String.format("%f", v), pos.getX(), pos.getY());
         strokeWeight(THICK_STROKE_SIZE);
         stroke(WHITE);
         fill(WHITE, OPACITY_INVISIBLE);
