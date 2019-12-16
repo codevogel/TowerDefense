@@ -10,7 +10,8 @@ static class SideMenu
         for (int i = 0; i < buttons.length; i++)
         {
             buttons[i] = tDInstance.new MenuTile(new Position(x, y));
-            buttons[i].style.setColor("fillColor", 255);
+            buttons[i].style.setColor(Color.FILL, 125);
+            buttons[i].style.setColor(Color.STROKE, 125);
             y += TILE_WIDTH;
         }
     }

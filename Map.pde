@@ -106,7 +106,7 @@ static class Map
     static private void setAPathGameTile(int x, int y)
     {
         grid[x][y].setPath(true);
-        grid[x][y].style.setColor("fillColor", LevelManager.currentLevel.style.pathColor);
+        grid[x][y].style.setColor(Color.FILL, LevelManager.currentLevel.style.pathColor);
     }
 
     

@@ -55,37 +55,41 @@ class Tile
         private int strokeOpacity = 50;
         private int strokeOpacitySelected = 255;
 
-        protected color getColor(String type)
+        protected color getColor(Color type)
         {
             switch(type)
             {
-                case "fill":
+                case FILL:
                     return fillColor;
-                case "fillSelected":
+                case FILL_SELECTED:
                     return fillColorSelected;
-                case "stroke":
+                case STROKE:
                     return strokeColor;
-                case "strokeSelected":
+                case STROKE_SELECTED:
                     return strokeColorSelected;
                 default:
                     return fillColor;
             }
         }
 
-        protected void setColor(String type, color c)
+        protected void setColor(Color type, color value)
         {
             switch(type)
             {
-                case "fill":
-                    fillColor = c;
-                case "fillSelected":
-                    fillColorSelected = c;
-                case "stroke":
-                    strokeColor = c;
-                case "strokeSelected":
-                    strokeColorSelected = c;
+                case FILL:
+                    fillColor = value;
+                    break;
+                case FILL_SELECTED:
+                    fillColorSelected = value;
+                    break;
+                case STROKE:
+                    strokeColor = value;
+                    break;
+                case STROKE_SELECTED:
+                    strokeColorSelected = value;
+                    break;
                 default:
-                    fillColor = c;
+                    break;
             }
             return;
         }
