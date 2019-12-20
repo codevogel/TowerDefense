@@ -15,6 +15,7 @@ final static int THICK_STROKE_SIZE = 3;
 final static int MINIMUM_POLY_EDGES = 3;
 
 final static color WHITE = 255;
+final color RED = color(0,255,0);
 final static int OPACITY_INVISIBLE = 0;
 
 private StartMenu startMenu = new StartMenu();

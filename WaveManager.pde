@@ -23,6 +23,11 @@ static class WaveManager
         return waveCount;
     }
 
+    public static float getPercentCompleted()
+    {
+        return (numEnemiesDead + float(numEnemiesPassed)) / numEnemiesToAdd;
+    }
+
     public static void startWave(int frameNo)
     {
         previousFrame = frameNo;
